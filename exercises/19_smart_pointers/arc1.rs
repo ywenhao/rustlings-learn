@@ -23,13 +23,13 @@ fn main() {
     let numbers: Vec<_> = (0..100u32).collect();
 
     // TODO: Define `shared_numbers` by using `Arc`.
-    // let shared_numbers = ???;
+    let shared_numbers = Arc::new(numbers);
 
     let mut join_handles = Vec::new();
 
     for offset in 0..8 {
         // TODO: Define `child_numbers` using `shared_numbers`.
-        // let child_numbers = ???;
+        let child_numbers = Arc::clone(&shared_numbers);
 
         let handle = thread::spawn(move || {
             let sum: u32 = child_numbers.iter().filter(|&&n| n % 8 == offset).sum();
@@ -43,3 +43,37 @@ fn main() {
         handle.join().unwrap();
     }
 }
+
+// 线程等待
+// use std::sync::{Arc, Condvar, Mutex};
+// use std::thread;
+
+// fn main() {
+//     let thread_count = 5;
+//     let counter = Arc::new((Mutex::new(0), Condvar::new()));
+
+//     for i in 0..thread_count {
+//         let counter_clone = Arc::clone(&counter);
+//         let _handle = thread::spawn(move || {
+//             println!("Thread {} started", i);
+//             // 模拟不同的执行时间
+//             thread::sleep(std::time::Duration::from_millis(i * 100));
+//             println!("Thread {} finished", i);
+
+//             let (lock, cvar) = &*counter_clone;
+//             let mut num_finished = lock.lock().unwrap();
+//             *num_finished += 1;
+//             if *num_finished == thread_count {
+//                 cvar.notify_one();
+//             }
+//         });
+//     }
+
+//     let (lock, cvar) = &*counter;
+//     let mut num_finished = lock.lock().unwrap();
+//     while *num_finished < thread_count {
+//         num_finished = cvar.wait(num_finished).unwrap();
+//     }
+
+//     println!("All threads have finished.");
+// }

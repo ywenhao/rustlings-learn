@@ -19,6 +19,11 @@ fn main() {
     // You can optionally experiment here.
 }
 
+// 给 Cow::from 传引用， 没有调用 to_mut 方法，是 Cow::Borrowed(_)
+// 给 Cow::from 传引用， 调用了 to_mut 方法，是 Cow::Owned(_)
+// 给 Cow::from 传值， 没有调用 to_mut 方法，是 Cow::Owned(_)
+// 给 Cow::from 传值， 调用了 to_mut 方法，是 Cow::Owned(_)
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -39,7 +44,7 @@ mod tests {
         let mut input = Cow::from(&vec);
         abs_all(&mut input);
         // TODO: Replace `todo!()` with `Cow::Owned(_)` or `Cow::Borrowed(_)`.
-        assert!(matches!(input, todo!()));
+        assert!(matches!(input, Cow::Borrowed(_)));
     }
 
     #[test]
@@ -49,10 +54,10 @@ mod tests {
         // also no clone. But the result is still owned because it was never
         // borrowed or mutated.
         let vec = vec![0, 1, 2];
-        let mut input = Cow::from(vec);
+        let mut input: Cow<'_, [i32]> = Cow::from(vec);
         abs_all(&mut input);
         // TODO: Replace `todo!()` with `Cow::Owned(_)` or `Cow::Borrowed(_)`.
-        assert!(matches!(input, todo!()));
+        assert!(matches!(input, Cow::Owned(_)));
     }
 
     #[test]
@@ -64,6 +69,6 @@ mod tests {
         let mut input = Cow::from(vec);
         abs_all(&mut input);
         // TODO: Replace `todo!()` with `Cow::Owned(_)` or `Cow::Borrowed(_)`.
-        assert!(matches!(input, todo!()));
+        assert!(matches!(input, Cow::Owned(_)));
     }
 }
