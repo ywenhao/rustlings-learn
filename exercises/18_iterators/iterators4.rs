@@ -10,6 +10,10 @@ fn factorial(num: u64) -> u64 {
     // - additional variables
     // For an extra challenge, don't use:
     // - recursion
+    Vec::from_iter(1..=num)
+        .into_iter()
+        .reduce(|acc, x| acc * x)
+        .unwrap_or(1)
 }
 
 fn main() {
