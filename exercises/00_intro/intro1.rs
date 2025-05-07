@@ -6,6 +6,12 @@
 // Try adding a new `println!` and check the updated output in the terminal.
 
 fn main() {
+    let mut input_text = String::new();
+    std::io::stdin().read_line(&mut input_text).unwrap();
+    if (input_text.split("\n")).next().unwrap() != "n" {
+        println!("error: '{}'", input_text);
+        return;
+    }
     println!(r#"       Welcome to...                      "#);
     println!(r#"                 _   _ _                  "#);
     println!(r#"  _ __ _   _ ___| |_| (_)_ __   __ _ ___  "#);
