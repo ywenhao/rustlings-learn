@@ -6,8 +6,9 @@
 // Try adding a new `println!` and check the updated output in the terminal.
 
 fn main() {
-    let mut input_text = String::new();
-    std::io::stdin().read_line(&mut input_text).unwrap();
+    // let mut input_text = String::new();
+    // std::io::stdin().read_line(&mut input_text).unwrap();
+    let input_str = io::stdin().lines().next().unwrap().unwrap();
     if (input_text.split("\n")).next().unwrap() != "n" {
         println!("error: '{}'", input_text);
         return;
